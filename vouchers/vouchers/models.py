@@ -51,7 +51,7 @@ class Voucher(models.Model):
             return None 
 
     def __unicode__(self):
-        return self.voucher_number
+        return self.voucher_number1 + " " + self.voucher_number2
 
 class SurveyAllocation(models.Model):
     survey_id = models.CharField(max_length=60, blank=True, null=True)
@@ -69,4 +69,7 @@ class SurveyAllocation(models.Model):
             voucher = vouchers[0]
             self.voucher = voucher
             self.voucher.allocate(self)
+
+    def __unicode__(self):
+        return self.survey_id
         

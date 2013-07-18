@@ -29,9 +29,10 @@
 <div class="container">
 
 <form method="post" action="" class="form_allocation">{% csrf_token %}
-    <h2 class="heading">Enter you survey number and preferred network</h2>
+    <h2 class="heading">Enter your survey number and preferred network</h2>
     {{ form.as_p }}
     <button class="btn btn-large btn-primary" type="submit">Get Voucher</button>
 </form>
+</div>
 {% endblock %}
 

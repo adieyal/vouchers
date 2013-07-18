@@ -35,7 +35,7 @@ class VoucherAllocation(View):
             if models.Voucher.objects.allocated_to_survey(survey):
                 return TemplateResponse(request, 'vouchers/already_allocated.html', {})
         except models.SurveyAllocation.DoesNotExist:
-            raise Http404
+                return TemplateResponse(request, 'vouchers/invalid_survey_id.html', {})
 
         unallocated = models.Voucher.objects.unallocated(network=network)
 
@@ -44,7 +44,7 @@ class VoucherAllocation(View):
             voucher.allocate(survey)
 
             return TemplateResponse(request, 'vouchers/success.html', {
-                voucher : voucher
+                "voucher" : voucher
             })
         else:
             return TemplateResponse(request, 'vouchers/no_voucher.html', {})

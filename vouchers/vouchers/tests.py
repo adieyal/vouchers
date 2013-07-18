@@ -166,7 +166,7 @@ class VoucherAllocationTestCase(TestCase):
         c = self.client
 
         response = c.get(allocation_url, {"survey_id" : "5678", "network" : "MTN"})
-        self.assertEquals(response.status_code, 404)
+        self.assertTemplateUsed(response, "vouchers/invalid_survey_id.html")
 
     def test_allocate_allocated(self):
 

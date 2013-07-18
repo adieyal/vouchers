@@ -4,7 +4,7 @@ import models
 
 class VoucherAdmin(admin.ModelAdmin):
     list_filter = ("network", "allocated")
-    list_display = ("network", "voucher_number", "allocated", "allocation_date")
+    list_display = ("network", "voucher_number1", "voucher_number2", "allocated", "allocation_date")
 
 class SurveyAllocationAdmin(admin.ModelAdmin):
     list_display = ("survey_id", "voucher", 'is_used')
