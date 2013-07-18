@@ -54,7 +54,7 @@ class Voucher(models.Model):
         return self.voucher_number1 + " " + self.voucher_number2
 
 class SurveyAllocation(models.Model):
-    survey_id = models.CharField(max_length=60, blank=True, null=True)
+    survey_id = models.CharField(max_length=60, blank=True, null=True, unique=True)
     voucher = models.OneToOneField(Voucher, null=True, related_name="_surveyallocation", blank=True)
 
     @property
