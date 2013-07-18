@@ -25,21 +25,26 @@ class EnterDetails(View):
 class VoucherAllocation(View):
     def get(self, request):
         survey_id = request.GET.get("survey_id", None)
+
         network = request.GET.get("network", None)
         if survey_id == None or network == None:
             raise Http404
 
-        unallocated = models.Voucher.objects.unallocated(network=network)
-        if models.Voucher.objects.allocated_to_survey(survey_id):
-            return TemplateResponse(request, 'vouchers/already_allocated.html', {})
+        try:
+            survey = models.SurveyAllocation.objects.get(survey_id=survey_id)
+            if models.Voucher.objects.allocated_to_survey(survey):
+                return TemplateResponse(request, 'vouchers/already_allocated.html', {})
+        except models.SurveyAllocation.DoesNotExist:
+            raise Http404
 
-        if unallocated.count() > 1:
-            voucher1 = unallocated[0]
-            voucher2 = unallocated[1]
-            voucher1.allocate(survey_id)
-            voucher2.allocate(survey_id)
+        unallocated = models.Voucher.objects.unallocated(network=network)
+
+        if unallocated.count() > 0:
+            voucher = unallocated[0]
+            voucher.allocate(survey)
 
             return TemplateResponse(request, 'vouchers/success.html', {
-                "voucher1" : voucher1, "voucher2" : voucher2
+                voucher : voucher
             })
-        return TemplateResponse(request, 'vouchers/no_voucher.html', {})
+        else:
+            return TemplateResponse(request, 'vouchers/no_voucher.html', {})
